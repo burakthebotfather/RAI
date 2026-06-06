@@ -31,12 +31,7 @@ async def handle_plus(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     if not message or not message.text:
         return
 
-    logger.info(
-        "Сообщение: chat_id=%s thread_id=%s user_id=%s text=%r",
-        message.chat.id, message.message_thread_id, message.from_user.id if message.from_user else None, message.text
-    )
-
-    if message.text.strip() != "+":
+    if "+" not in message.text:
         return
 
     chat_id = message.chat.id
@@ -85,8 +80,6 @@ async def handle_plus(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
     for admin_id in (chat_cfg["admin1"], chat_cfg["admin2"]):
         try:
-            vote_id_placeholder = 0
-            keyboard = rating_keyboard(user_id, vote_id_placeholder)
             sent = await context.bot.send_message(
                 chat_id=admin_id,
                 text=(
@@ -94,19 +87,15 @@ async def handle_plus(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
                     f"Организация: {chat_cfg['name']}\n"
                     f"Текущий рейтинг водителя: {current_rating:.2f}⭐"
                 ),
-                reply_markup=keyboard
+                reply_markup=rating_keyboard(user_id, 0)
             )
             vote_id = db.save_pending_vote(user_id, chat_id, admin_id, sent.message_id)
-
-            keyboard = rating_keyboard(user_id, vote_id)
             await context.bot.edit_message_reply_markup(
                 chat_id=admin_id,
                 message_id=sent.message_id,
-                reply_markup=keyboard
+                reply_markup=rating_keyboard(user_id, vote_id)
             )
-
             db.schedule_delete(admin_id, sent.message_id, delete_at)
-
         except TelegramError as e:
             logger.error("Ошибка отправки опроса администратору %s: %s", admin_id, e)
 
