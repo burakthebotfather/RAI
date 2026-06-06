@@ -31,6 +31,11 @@ async def handle_plus(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
     if not message or not message.text:
         return
 
+    logger.info(
+        "Сообщение: chat_id=%s thread_id=%s user_id=%s text=%r",
+        message.chat.id, message.message_thread_id, message.from_user.id if message.from_user else None, message.text
+    )
+
     if message.text.strip() != "+":
         return
 
