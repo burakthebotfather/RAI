@@ -19,7 +19,7 @@ CHATS = {
     },
     -1003117964688: {
         "name": "F. Flowers Titan - Мележа, 1",
-        "thread_a": 3,
+        "thread_a": 5,
         "thread_b": 1554,
         "admin1": 8239056457,
         "admin2": 6792310907,
@@ -61,5 +61,5 @@ CHATS = {
     },
 }
 
-COOLDOWN_HOURS = 8
+COOLDOWN_HOURS = 15
 DELETE_AFTER_HOURS = 24
