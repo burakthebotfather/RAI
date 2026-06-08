@@ -47,7 +47,7 @@ CHATS = {
     },
     -1003204457764: {
         "name": "J. Jungle.by - Неманская, 2",
-        "thread_a": 3,
+        "thread_a": 4,
         "thread_b": 3987,
         "admin1": 379684761,
         "admin2": 6792310907,
